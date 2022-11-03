@@ -69,9 +69,7 @@
 
             var isPermitted = policyEnforcementPoint.VerifyDelegationTokenPermit(
                 configuration["AuthorizationRegistryIdentifier"],
-                delegationResponse.DelegationToken,
-                configuration["Playbook"],
-                configuration["MinimalPlaybookVersion"]);
+                delegationResponse.DelegationToken);
 
             return (isPermitted, jwtToken);
         }

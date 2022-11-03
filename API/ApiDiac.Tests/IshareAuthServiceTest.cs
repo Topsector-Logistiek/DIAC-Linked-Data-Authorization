@@ -25,9 +25,7 @@
                 { "AuthorizationRegistryIdentifier", "auth_ident" },
                 { "ClientId", "ClientId" },
                 { "AuthorizationRegistryTokenUrl", "http://test_token_url" },
-                { "AuthorizationRegistryDelegationUrl", "http://test_del_url" },
-                { "Playbook", "testplaybook" },
-                { "MinimalPlaybookVersion", "123" }
+                { "AuthorizationRegistryDelegationUrl", "http://test_del_url" }
             };
 
             IConfiguration configuration = new ConfigurationBuilder()
@@ -38,8 +36,6 @@
             policyEnforcementPointMock.Setup(o => o.VerifyDelegationTokenPermit(
                 inMemorySettings["AuthorizationRegistryIdentifier"],
                 testJwtResponse.DelegationToken,
-                inMemorySettings["Playbook"],
-                inMemorySettings["MinimalPlaybookVersion"],
                 null,
                 null,
                 null)).Returns(true);

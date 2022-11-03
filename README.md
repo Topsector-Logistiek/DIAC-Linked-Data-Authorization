@@ -33,7 +33,6 @@ This Github repository is an implementation of authorization for Linked Data. Li
    - AuthorizationRegistryTokenUrl > The URL of your token in the authorization registry.
    - AuthorizationRegistryIdentifier >  Your EORI in the authorization registry.
    - Playbook > Your playbook name.
-   - MinimalPlaybookVersion > Your playbook version.
 4. After building the application, you are navigated to a localhost address in your default browser. This is a Swagger UI containing the main endpoints of this project.
 5. Use the *access_token* from step 2 in the Authorize field of Swagger UI. If everything goes well, you are now authorized! The token is valid for about an hour and you should be able to use the rest of the endpoints during that time. In case you call the APIs outside Swagger, use the access token as Authorization header in your request.
 
