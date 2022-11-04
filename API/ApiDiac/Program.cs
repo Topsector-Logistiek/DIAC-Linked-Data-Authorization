@@ -20,8 +20,8 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1",
         Contact = new OpenApiContact
         {
-            Name = "iAMLAB",
-            Email = "nlgeniamlab@cgi.com",
+            Name = "Adoptie Support Team - Topsector Logistiek",
+            Url = new Uri("https://topsectorlogistiek.atlassian.net/servicedesk/customer/portal/2"),
         },
     });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
