@@ -15,7 +15,7 @@
             this.acceptHeaderValue = acceptHeaderValue;
         }
 
-        public string GetObject(string query, string queryPath)
+        public async Task<string> GetObject(string query, string queryPath)
         {
             ValidateConfig();
 

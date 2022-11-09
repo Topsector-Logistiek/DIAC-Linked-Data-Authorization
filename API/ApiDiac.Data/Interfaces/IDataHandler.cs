@@ -4,6 +4,6 @@
     {
         void Configure(Uri baseUri, string authHeaderValue, string acceptHeaderValue);
 
-        string GetObject(string query, string queryPath);
+        Task<string> GetObject(string query, string queryPath);
     }
 }

@@ -56,6 +56,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddIshareCoreServices();
 
 builder.Services.AddScoped<IDataHandler, SparqlDataHandler>();
+builder.Services.AddScoped<ITriplyQueryPagination, TriplyQueryPagination>();
 builder.Services.AddScoped<IQueryService, QueryService>();
 builder.Services.AddScoped<IIshareAuthService, IshareAuthService>();
 

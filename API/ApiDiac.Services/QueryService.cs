@@ -17,11 +17,13 @@
         private readonly string authHeaderValue;
         private readonly IConfiguration configuration;
         private readonly IDataHandler dataHandler;
+        private readonly ITriplyQueryPagination triplyQueryPagination;
 
-        public QueryService(IConfiguration configuration, IDataHandler dataHandler)
+        public QueryService(IConfiguration configuration, IDataHandler dataHandler, ITriplyQueryPagination triplyQueryPagination)
         {
             this.configuration = configuration;
             this.dataHandler = dataHandler;
+            this.triplyQueryPagination = triplyQueryPagination;
 
             assemblyPath = new FileInfo(Assembly.GetExecutingAssembly().Location);
 
@@ -29,15 +31,18 @@
             authHeaderValue = configuration.GetConnectionString("AuthHeaderValue");
         }
 
-        public string GetJsonLdForIdAndAttribute(Uri id, string attribute, bool framed)
+        public async Task<string> GetJsonLdForIdAndAttribute(Uri id, string attribute, bool framed)
         {
-            dataHandler.Configure(sparqlBaseUri, authHeaderValue, "application/ld+json");
+            var pageSize = 10000;
+            var acceptHeaderValue = "application/ld+json";
+
+            dataHandler.Configure(sparqlBaseUri, authHeaderValue, acceptHeaderValue);
 
             (var query, var queryConfig) = ParseSparqlQuery(id, attribute);
             var queryPath = configuration.GetConnectionString("http://your_default_profile");
-            var result = dataHandler.GetObject(query, queryPath);
+            var result = await triplyQueryPagination.GetAllPages(query, queryPath, pageSize, acceptHeaderValue);
 
-            if (result == "{ }\n" || result == "[]")
+            if (string.IsNullOrEmpty(result) || result == "[]")
             {
                 return null;
             }
@@ -52,15 +57,25 @@
             }
         }
 
-        public string GetLdForProfileAndQuery(Uri profile, string query, string acceptHeaderValue)
+        public async Task<string> GetLdForProfileAndQuery(Uri profile, string query, string acceptHeaderValue)
         {
+            var pageSize = 10000;
+
+            var emptyResponse = new List<string> {
+                "",
+                null,
+                "[]",
+                "sub,pred,obj\r\n",
+                "?sub\t?pred\t?obj\n",
+                "{\n  \"head\": {\n    \"link\": [],\n    \"vars\": [\n      \"sub\",\n      \"pred\",\n      \"obj\"\n    ]\n  },\n  \"results\": {\n    \"bindings\": []\n  }\n}",
+                "<?xml version=\"1.0\"?>\n<sparql xmlns=\"http://www.w3.org/2005/sparql-results#\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://www.w3.org/2007/SPARQL/result.xsd\">\n  <head>\n    <variable name=\"sub\"/>\n    <variable name=\"pred\"/>\n    <variable name=\"obj\"/>\n  </head>\n  <results/>\n</sparql>\n"
+            };
+
             dataHandler.Configure(sparqlBaseUri, authHeaderValue, acceptHeaderValue);
-
             var queryPath = configuration.GetConnectionString(profile.ToString());
+            var result = await triplyQueryPagination.GetAllPages(query, queryPath, pageSize, acceptHeaderValue);
 
-            var result = dataHandler.GetObject(query, queryPath);
-
-            if (result == "{ }\n" || result == "[]")
+            if (emptyResponse.Contains(result))
             {
                 return null;
             }
@@ -68,7 +83,7 @@
             return result;
         }
 
-        public (string, JObject) ParseSparqlQuery(Uri id, string attribute)
+        private (string, JObject) ParseSparqlQuery(Uri id, string attribute)
         {
             try
             {
@@ -97,7 +112,7 @@
             }
         }
 
-        public string ConvertJsonLdFromStandardToFramed(string jsonLd, JToken frame)
+        private string ConvertJsonLdFromStandardToFramed(string jsonLd, JToken frame)
         {
             var data = JToken.Parse(jsonLd);
             var opts = new JsonLdOptions();

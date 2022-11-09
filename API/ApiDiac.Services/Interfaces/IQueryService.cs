@@ -2,9 +2,9 @@
 {
     public interface IQueryService
     {
-        string GetJsonLdForIdAndAttribute(Uri id, string attribute, bool framed);
+        Task<string> GetJsonLdForIdAndAttribute(Uri id, string attribute, bool framed);
 
-        string GetLdForProfileAndQuery(Uri profile, string query, string acceptHeaderValue);
+        Task<string> GetLdForProfileAndQuery(Uri profile, string query, string acceptHeaderValue);
 
         bool IsAttributeValid(string attribute);
     }
