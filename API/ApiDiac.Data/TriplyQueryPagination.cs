@@ -33,9 +33,7 @@
                 var result = await dataHandler.GetObject(nextPageQuery, queryPath);
 
                 if (emptyResponse.Contains(result))
-                {
                     break;
-                }
 
                 if (acceptHeaderValue == "application/ld+json" || acceptHeaderValue == "application/json")
                 {
@@ -55,7 +53,7 @@
             return fullResult.ToString();
         }
 
-        private string GetNextPage(string query, int currentPage, int pageSize)
+        private static string GetNextPage(string query, int currentPage, int pageSize)
         {
             return query + "OFFSET " + (pageSize * currentPage) + " LIMIT " + pageSize;
         }
