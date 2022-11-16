@@ -40,7 +40,7 @@
             token = "Bearer " + token;
 
             var queryServiceMock = new Mock<IQueryService>();
-            queryServiceMock.Setup(o => o.GetJsonLdForIdAndAttribute(id, attribute, false)).Returns(Task.FromResult("{}")).Verifiable();
+            queryServiceMock.Setup(o => o.GetJsonLdForIdAndAttribute(id, attribute, false, false)).Returns(Task.FromResult("{}")).Verifiable();
             queryServiceMock.Setup(o => o.IsAttributeValid(attribute)).Returns(true).Verifiable();
 
             var delegationEvidence = DelegationEvidenceBuilder.GenerateBasicDelegationRequest(
@@ -115,7 +115,7 @@
             token = "Bearer " + token;
 
             var queryServiceMock = new Mock<IQueryService>();
-            queryServiceMock.Setup(o => o.GetLdForProfileAndQuery(profile, query, acceptHeaderValue)).Returns(Task.FromResult("LD in any format")).Verifiable();
+            queryServiceMock.Setup(o => o.GetLdForProfileAndQuery(profile, query, acceptHeaderValue, false)).Returns(Task.FromResult("LD in any format")).Verifiable();
 
             var delegationEvidence = DelegationEvidenceBuilder.GenerateBasicDelegationRequest(
                 "",

@@ -41,11 +41,13 @@ There are 2 APIs available that can be used to execute SPARQL queries and receiv
 - In the first endpoint **/diac/GetLinkedDataForConceptAndIdAndAttribute/{Concept}/{Id}** you can provide a *concept*, *id* and *attribute*. 
   - In case you use the API outside swagger, provide the concept and id in the path and add the attribute as parameter. According to these values, a default construct query will be executed through the triplestore and the respective Linked Data will be received as response.
   - By default, the data is received in standard JSON-LD format. If you wish to receive the data in framed JSON-LD instead, you can set the *framed* parameter to true.
+  - Triply returns only the first page back when executing a query, meaning that you can get up to 10,000 results. In case you want to receive all the data from Triply at once, you can set the *pagination* parameter to true. 
   - In the data part of the code you can add all the default construct queries, in the form of the examples provided. For each query, an RQ file containing the query (where the id is included as "identifier") and a JSON file containing the frame are required. Both files should be named with the same name, which is the attribute that will be provided during the call of the API.
   - If you would like to request data on behalf of another user, you can provide the *access subject* of this user, i.e. their EORI. If it is not provided, the access subject is the ClientId of the current logged in user.
 - In the second endpoint **/diac/GetLinkedDataForProfileAndQuery/{Profile}** you can provide a *profile*, *query* and *accept* header. 
   - In case you use the API outside swagger, provide the profile in the path and add the query as parameter and the accept header. Profile is a subset of data you have access to and query is any query you wish to execute on this data.
   - Depending on the query form (ask, select, construct, describe), a valid media type should be provided as accept header. After execution, the respective Linked Data will be received as response in the format requested by the accept header.
+  - Triply returns only the first page back when executing a query, meaning that you can get up to 10,000 results. In case you want to receive all the data from Triply at once, you can set the *pagination* parameter to true.
   - If you would like to request data on behalf of another user, you can provide the *access subject* of this user, i.e. their EORI. If it is not provided, the access subject is the ClientId of the current logged in user.
 > Note: You can find all the valid media types and result formats for all query forms on [TriplyDB] .
 

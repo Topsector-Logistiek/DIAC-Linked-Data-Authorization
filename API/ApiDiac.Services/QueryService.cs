@@ -31,36 +31,40 @@
             authHeaderValue = configuration.GetConnectionString("AuthHeaderValue");
         }
 
-        public async Task<string> GetJsonLdForIdAndAttribute(Uri id, string attribute, bool framed)
+        public async Task<string> GetJsonLdForIdAndAttribute(Uri id, string attribute, bool framed, bool pagination)
         {
-            var pageSize = 10000;
             var acceptHeaderValue = "application/ld+json";
-
             dataHandler.Configure(sparqlBaseUri, authHeaderValue, acceptHeaderValue);
 
             (var query, var queryConfig) = ParseSparqlQuery(id, attribute);
             var queryPath = configuration.GetConnectionString("http://your_default_profile");
-            var result = await triplyQueryPagination.GetAllPages(query, queryPath, pageSize, acceptHeaderValue);
+
+            string? result;
+            if (!pagination)
+            {
+                result = await dataHandler.GetObject(query, queryPath);
+            }
+            else
+            {
+                var pageSize = 10000;
+                result = await triplyQueryPagination.GetAllPages(query, queryPath, pageSize, acceptHeaderValue);
+            }
 
             if (string.IsNullOrEmpty(result) || result == "[]")
             {
                 return null;
             }
 
-            if (!framed)
-            {
-                return result;
-            }
-            else
+            if (framed)
             {
                 return ConvertJsonLdFromStandardToFramed(result, queryConfig["frame"]);
             }
+
+            return result;
         }
 
-        public async Task<string> GetLdForProfileAndQuery(Uri profile, string query, string acceptHeaderValue)
+        public async Task<string> GetLdForProfileAndQuery(Uri profile, string query, string acceptHeaderValue, bool pagination)
         {
-            var pageSize = 10000;
-
             var emptyResponse = new List<string> {
                 "",
                 null,
@@ -73,7 +77,17 @@
 
             dataHandler.Configure(sparqlBaseUri, authHeaderValue, acceptHeaderValue);
             var queryPath = configuration.GetConnectionString(profile.ToString());
-            var result = await triplyQueryPagination.GetAllPages(query, queryPath, pageSize, acceptHeaderValue);
+
+            string? result;
+            if (!pagination)
+            {
+                result = await dataHandler.GetObject(query, queryPath);
+            }
+            else
+            {
+                var pageSize = 10000;
+                result = await triplyQueryPagination.GetAllPages(query, queryPath, pageSize, acceptHeaderValue);
+            }
 
             if (emptyResponse.Contains(result))
             {
