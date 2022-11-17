@@ -19,7 +19,7 @@
     public class ApiDiacTest
     {
         [Fact]
-        public void TestGetLinkedDataForConceptAndIdApi()
+        public async Task TestGetLinkedDataForConceptAndIdApi()
         {
             var concept = new Uri("http://test_concept_url");
             var id = new Uri("http://test_id_url");
@@ -40,7 +40,7 @@
             token = "Bearer " + token;
 
             var queryServiceMock = new Mock<IQueryService>();
-            queryServiceMock.Setup(o => o.GetJsonLdForIdAndAttribute(id, attribute, false)).Returns("{}").Verifiable();
+            queryServiceMock.Setup(o => o.GetJsonLdForIdAndAttribute(id, attribute, false, false)).Returns(Task.FromResult("{}")).Verifiable();
             queryServiceMock.Setup(o => o.IsAttributeValid(attribute)).Returns(true).Verifiable();
 
             var delegationEvidence = DelegationEvidenceBuilder.GenerateBasicDelegationRequest(
@@ -70,35 +70,31 @@
                 .AddInMemoryCollection(inMemorySettings)
                 .Build();
 
-            var poort8AuthenticationServericeMock = new Mock<IAuthenticationService>();
-            poort8AuthenticationServericeMock
+            var poort8AuthenticationServiceMock = new Mock<IAuthenticationService>();
+            poort8AuthenticationServiceMock
                 .Setup(o => o.ValidateAuthorizationHeader("ClientId", new StringValues(token))).Verifiable();
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Headers.Add("Authorization", token);
 
             var controller = new DiacController(queryServiceMock.Object, configuration, ishareAuthServiceMock.Object,
-                poort8AuthenticationServericeMock.Object, new Mock<ILogger<DiacController>>().Object)
+                poort8AuthenticationServiceMock.Object, new Mock<ILogger<DiacController>>().Object)
             { ControllerContext = new ControllerContext { HttpContext = httpContext } };
 
-            var result = controller.GetLinkedDataForConceptAndIdAndAttribute(inputData, attribute);
+            var result = await controller.GetLinkedDataForConceptAndIdAndAttribute(inputData, attribute) as OkObjectResult;
 
-            Assert.NotNull(result);
-            Assert.IsType<OkObjectResult>(result);
-
-            var resultObject = result as OkObjectResult;
-
-            poort8AuthenticationServericeMock.Verify();
+            poort8AuthenticationServiceMock.Verify();
             ishareAuthServiceMock.Verify();
             queryServiceMock.Verify();
 
-            Assert.NotNull(resultObject);
-            Assert.IsType<JObject>(resultObject.Value);
-            Assert.Equal(new JObject(), resultObject.Value);
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result);
+            Assert.IsType<JObject>(result.Value);
+            Assert.Equal(new JObject(), result.Value);
         }
 
         [Fact]
-        public void TestGetLinkedDataForQueryAndProfileApi()
+        public async Task TestGetLinkedDataForQueryAndProfileApi()
         {
             var profile = new Uri("http://test_profile_url");
             var query = "";
@@ -119,7 +115,7 @@
             token = "Bearer " + token;
 
             var queryServiceMock = new Mock<IQueryService>();
-            queryServiceMock.Setup(o => o.GetLdForProfileAndQuery(profile, query, acceptHeaderValue)).Returns("LD in any format").Verifiable();
+            queryServiceMock.Setup(o => o.GetLdForProfileAndQuery(profile, query, acceptHeaderValue, false)).Returns(Task.FromResult("LD in any format")).Verifiable();
 
             var delegationEvidence = DelegationEvidenceBuilder.GenerateBasicDelegationRequest(
                 "",
@@ -148,27 +144,27 @@
                 .AddInMemoryCollection(inMemorySettings)
                 .Build();
 
-            var poort8AuthenticationServericeMock = new Mock<IAuthenticationService>();
-            poort8AuthenticationServericeMock
+            var poort8AuthenticationServiceMock = new Mock<IAuthenticationService>();
+            poort8AuthenticationServiceMock
                 .Setup(o => o.ValidateAuthorizationHeader("ClientId", new StringValues(token))).Verifiable();
 
             var httpContext = new DefaultHttpContext();
             httpContext.Request.Headers.Add("Authorization", token);
 
             var controller = new DiacController(queryServiceMock.Object, configuration, ishareAuthServiceMock.Object,
-                poort8AuthenticationServericeMock.Object, new Mock<ILogger<DiacController>>().Object)
+                poort8AuthenticationServiceMock.Object, new Mock<ILogger<DiacController>>().Object)
             { ControllerContext = new ControllerContext { HttpContext = httpContext } };
 
-            var result = controller.GetLinkedDataForProfileAndQuery(inputData, query, acceptHeaderValue);
+            var result = await controller.GetLinkedDataForProfileAndQuery(inputData, query, acceptHeaderValue) as ContentResult;
+
+            poort8AuthenticationServiceMock.Verify();
+            ishareAuthServiceMock.Verify();
+            queryServiceMock.Verify();
 
             Assert.NotNull(result);
             Assert.IsType<ContentResult>(result);
-
-            var resultObject = result as ContentResult;
-
-            Assert.NotNull(resultObject);
-            Assert.IsType<string>(resultObject.ContentType);
-            Assert.Equal("LD in any format", resultObject.Content);
+            Assert.IsType<string>(result.ContentType);
+            Assert.Equal("LD in any format", result.Content);
         }
     }
 }
