@@ -9,7 +9,7 @@ This Github repository is an implementation of authorization for Linked Data. Li
 ## Instructions
 
 ### Prerequisites
-1.  Get an [iShare] test certificate. You can request one [here] . 
+1.  Get an [iShare] test certificate. You can request one [here](https://dev.ishare.eu/demo-and-testing/test-certificates.html) . 
 2.  Add the certificate to the authorization register (in this PoC, [Poort8]).
 3.  Get a triplestore (in this PoC, [TriplyDB]).
 
@@ -23,14 +23,14 @@ This Github repository is an implementation of authorization for Linked Data. Li
 3. Set the following variables in the configuration:
    - ConnectionStrings > The base URL of your SPARQL endpoint, your query paths and your authentication header value (Bearer token) in the triplestore. If you are using TriplyDB, you can generate your token via: User settings > API tokens > Create token.
    - ClientId > Your EORI (as a user), for example: EU.EORI.NL888888881.
-   - SchemeOwnerUrl > Use the iSHARE scheme owner url of the test environment: https://scheme.isharetest.net.
+   - SchemeOwnerUrl > Use the iSHARE scheme owner url of the test environment: `https://scheme.isharetest.net`.
    - SchemeOwnerIdentifier > Use the EORI of the iSHARE scheme owner: EU.EORI.NL000000000.
    - Certificate > Your iSHARE test certificate as a byte stream, extracted from the certificate file (p12 or pfx).
    - CertificatePassword > The password of the iSHARE test certificate.
-   - CertificateChain > The certificates of the [iSHARE Test CA]: as a comma separated byte stream. In case your certificate is issued by *C=NL, O=iSHARE Foundation, CN=TEST iSHARE Foundation PKIoverheid Organisatie Server CA - G3*, you can use [this] chain.
+   - CertificateChain > The certificates of the [iSHARE Test CA]: as a comma separated byte stream. In case your certificate is issued by *C=NL, O=iSHARE Foundation, CN=TEST iSHARE Foundation PKIoverheid Organisatie Server CA - G3*, you can use [this](https://raw.githubusercontent.com/POORT8/Poort8.Ishare.Common/master/ishare-test-ca-chain.txt) chain.
    - CertificateChainPassword > Empty string for public test certificates: ""
-   - AuthorizationRegistryDelegationUrl > The URL of your delegation evidence in the authorization registry, that is "https://api.poort8.nl/ar-preview/playbook/{{Playbook}}/ishare/delegation"  for Poort8.
-   - AuthorizationRegistryTokenUrl > The token URL of the authorization registry, that is "https://api.poort8.nl/ar-preview/ishare/connect/token" for Poort8.
+   - AuthorizationRegistryDelegationUrl > The URL of your delegation evidence in the authorization registry, that is `https://api.poort8.nl/ar-preview/playbook/{{Playbook}}/ishare/delegation`  for Poort8.
+   - AuthorizationRegistryTokenUrl > The token URL of the authorization registry, that is `https://api.poort8.nl/ar-preview/ishare/connect/token` for Poort8.
    - AuthorizationRegistryIdentifier >  The EORI of the authorization registry.
    - Playbook > Your playbook name.
 4. After building the application, you are navigated to a localhost address in your default browser. This is a Swagger UI containing the main endpoints of this project.
@@ -49,7 +49,7 @@ There are 2 APIs available that can be used to execute SPARQL queries and receiv
   - Depending on the query form (ask, select, construct, describe), a valid media type should be provided as accept header. After execution, the respective Linked Data will be received as response in the format requested by the accept header.
   - TriplyDB returns only the first page back when executing a query, meaning that you can get up to 10,000 results. In case you want to receive all the data from TriplyDB at once, you can set the *pagination* parameter to true.
   - If you would like to request data on behalf of another user, you can provide the *access subject* of this user, i.e. their EORI. If it is not provided, the access subject is the ClientId of the current logged in user.
-> Note: You can find all the valid media types and result formats for all query forms on [TriplyDB] .
+> Note: [Here](https://triply.cc/docs/triply-api#sparql-query-result-formats) you can find all the valid media types and result formats for all query forms.
 
 ## Development
 Want to apply authorization on Linked Data yourself? Great! This software is open source.
@@ -59,11 +59,9 @@ You can download this repo and use it as base to develop your own software.
 MIT
 
 [iShare]: <https://ishare.eu/>
-[here]: <https://dev.ishare.eu/demo-and-testing/test-certificates.html>
 [Poort8]: <https://www.poort8.nl/>
 [TriplyDB]: <https://triplydb.com/>
 [/testing/generate-authorize-request]: <https://scheme.isharetest.net/swagger/index.html#/ServiceConsumer/post_testing_generate_authorize_request>
 [Common]: <https://github.com/POORT8/Poort8.Ishare.Common>
 [JWT]: <https://jwt.io/>
 [iSHARE Test CA]: <https://dev.ishareworks.org/demo-and-testing/test-certificates.html#ishare-test-ca>
-[this]: <https://raw.githubusercontent.com/POORT8/Poort8.Ishare.Common/master/ishare-test-ca-chain.txt>
