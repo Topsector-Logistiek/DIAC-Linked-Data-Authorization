@@ -10,7 +10,7 @@ This Github repository is an implementation of authorization for Linked Data. Li
 
 ### Prerequisites
 1.  Get an [iShare] test certificate. You can request one [here](https://dev.ishare.eu/demo-and-testing/test-certificates.html) . 
-2.  Add the certificate to the authorization register (in this PoC, [Poort8]).
+2.  Add the certificate to the Authorisation registry (in this PoC, [Poort8]).
 3.  Get a triplestore (in this PoC, [TriplyDB]).
 
 ### Getting Authorized
@@ -54,6 +54,11 @@ There are 2 APIs available that can be used to execute SPARQL queries and receiv
 ## Development
 Want to apply authorization on Linked Data yourself? Great! This software is open source.
 You can download this repo and use it as base to develop your own software.
+
+## Interaction Diagram
+The interaction between the Triple Store, Authorisation registry, and the users for an example usecase is illustrated in the diagram below.
+
+![Interaction Diagram Afleverprofiel](/Afleverprofiel_0.1_600x730.png)
 
 ## License
 MIT
