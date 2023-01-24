@@ -40,7 +40,7 @@
             token = "Bearer " + token;
 
             var queryServiceMock = new Mock<IQueryService>();
-            queryServiceMock.Setup(o => o.GetJsonLdForIdAndAttribute(id, attribute, false, false)).Returns(Task.FromResult("{}")).Verifiable();
+            queryServiceMock.Setup(o => o.GetData(id, attribute, false, false)).Returns(Task.FromResult("{}")).Verifiable();
             queryServiceMock.Setup(o => o.IsAttributeValid(attribute)).Returns(true).Verifiable();
 
             var delegationEvidence = DelegationEvidenceBuilder.GenerateBasicDelegationRequest(
@@ -81,7 +81,7 @@
                 poort8AuthenticationServiceMock.Object, new Mock<ILogger<DiacController>>().Object)
             { ControllerContext = new ControllerContext { HttpContext = httpContext } };
 
-            var result = await controller.GetLinkedDataForConceptAndIdAndAttribute(inputData, attribute) as OkObjectResult;
+            var result = await controller.GetData(inputData, attribute) as OkObjectResult;
 
             poort8AuthenticationServiceMock.Verify();
             ishareAuthServiceMock.Verify();
@@ -115,7 +115,7 @@
             token = "Bearer " + token;
 
             var queryServiceMock = new Mock<IQueryService>();
-            queryServiceMock.Setup(o => o.GetLdForProfileAndQuery(profile, query, acceptHeaderValue, false)).Returns(Task.FromResult("LD in any format")).Verifiable();
+            queryServiceMock.Setup(o => o.RunSparqlQuery(profile, query, acceptHeaderValue, false)).Returns(Task.FromResult("LD in any format")).Verifiable();
 
             var delegationEvidence = DelegationEvidenceBuilder.GenerateBasicDelegationRequest(
                 "",
@@ -155,7 +155,7 @@
                 poort8AuthenticationServiceMock.Object, new Mock<ILogger<DiacController>>().Object)
             { ControllerContext = new ControllerContext { HttpContext = httpContext } };
 
-            var result = await controller.GetLinkedDataForProfileAndQuery(inputData, query, acceptHeaderValue) as ContentResult;
+            var result = await controller.RunSparqlQuery(inputData, query, acceptHeaderValue) as ContentResult;
 
             poort8AuthenticationServiceMock.Verify();
             ishareAuthServiceMock.Verify();

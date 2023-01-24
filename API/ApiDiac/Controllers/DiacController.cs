@@ -41,8 +41,8 @@
 
         [SwaggerOperation(Summary = "Provide a concept, id and attribute to receive data in JSON-LD. Optionally, set framed to true to receive data in framed JSON-LD, set pagination to true to receive data from all the pages or provide an access subject to request data on behalf of another user.")]
         [Produces("application/ld+json")]
-        [HttpGet("GetLinkedDataForConceptAndIdAndAttribute/{Concept}/{Id}")]
-        public async Task<IActionResult> GetLinkedDataForConceptAndIdAndAttribute([FromRoute] InputDataConceptAndId inputData, [FromQuery][Required][DefaultValue("sample_attribute")] string attribute, [FromQuery] string? accessSubject = null, [FromQuery] bool framed = false, [FromQuery] bool pagination = false)
+        [HttpGet("GetData/{Concept}/{Id}")]
+        public async Task<IActionResult> GetData([FromRoute] InputDataConceptAndId inputData, [FromQuery][Required][DefaultValue("sample_attribute")] string attribute, [FromQuery] string? accessSubject = null, [FromQuery] bool framed = false, [FromQuery] bool pagination = false)
         {
             var authorization = Request.Headers.Authorization;
             var hadAuth = AuthenticationHeaderValue.TryParse(authorization, out var authHeader);
@@ -147,8 +147,8 @@
         }
 
         [SwaggerOperation(Summary = "Provide a profile, query and accept header to receive data in the requested format. Optionally, set pagination to true to receive data from all the pages or provide an access subject to request data on behalf of another user.")]
-        [HttpGet("GetLinkedDataForProfileAndQuery/{Profile}")]
-        public async Task<IActionResult> GetLinkedDataForProfileAndQuery([FromRoute] InputDataProfile inputData, [FromQuery][Required] string query, [FromHeader(Name = "accept")][Required] string acceptHeaderValue, [FromQuery] string? accessSubject = null, [FromQuery] bool pagination = false)
+        [HttpGet("RunSparqlQuery/{Profile}")]
+        public async Task<IActionResult> RunSparqlQuery([FromRoute] InputDataProfile inputData, [FromQuery][Required] string query, [FromHeader(Name = "accept")][Required] string acceptHeaderValue, [FromQuery] string? accessSubject = null, [FromQuery] bool pagination = false)
         {
             var authorization = Request.Headers.Authorization;
             var hadAuth = AuthenticationHeaderValue.TryParse(authorization, out var authHeader);
