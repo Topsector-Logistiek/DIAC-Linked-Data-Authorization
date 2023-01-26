@@ -1,0 +1,33 @@
+[
+  {
+    "id": "1234",
+    "name": "testDataset",
+    "displayName": "testDisplayName",
+    "owner": {
+      "accountName": "test",
+      "uid": "630c6c98f54a1f2995119666",
+      "name": "test",
+      "description": "",
+      "createdAt": "2022-08-29T07:36:56.601Z",
+      "type": "org"
+    },
+    "accessLevel": "public",
+    "createdAt": "2020-01-01T00:00:00.000Z",
+    "updatedAt": "2020-01-01T00:00:00.000Z",
+    "graphCount": 4,
+    "statements": 123,
+    "serviceCount": 1,
+    "assetCount": 1233,
+    "topics": [],
+    "prefixes": [
+      {
+        "prefixLabel": "graph",
+        "iri": "https://testtriply.cc/test/test/graphs/",
+        "scope": "local"
+      }
+    ],
+    "implicitTopics": [],
+    "lastGraphsUpdateTime": "2020-01-01T00:00:00.000Z",
+    "exampleResources": []
+  }
+]

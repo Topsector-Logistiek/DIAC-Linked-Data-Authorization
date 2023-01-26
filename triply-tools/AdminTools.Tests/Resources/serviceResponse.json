@@ -1,0 +1,21 @@
+{
+  "type": "virtuoso",
+  "version": "22.08.0",
+  "capabilities": [
+    "sparql",
+    "sparqlApi"
+  ],
+  "name": "Alerts-test",
+  "id": "62debef07afb9169d5889ddd",
+  "numberOfLoadedStatements": 24256,
+  "numberOfGraphs": 17,
+  "numberOfLoadedGraphs": 17,
+  "numberOfGraphErrors": 0,
+  "status": "running",
+  "outOfSync": true,
+  "createdAt": "2022-07-25T16:04:00.444Z",
+  "loadedAt": "2022-08-18T10:56:22.739Z",
+  "endpoint": "https://api.testtriply.cc/datasets/test/Alerts-test/services/Alerts-test/sparql",
+  "queriedAtUncached": "2022-08-18T10:47:51.716Z",
+  "queriedAt": "2022-08-18T10:47:51.902Z"
+}
