@@ -31,7 +31,7 @@
             authHeaderValue = configuration.GetConnectionString("AuthHeaderValue");
         }
 
-        public async Task<string> GetJsonLdForIdAndAttribute(Uri id, string attribute, bool framed, bool pagination)
+        public async Task<string> GetData(Uri id, string attribute, bool framed, bool pagination)
         {
             var acceptHeaderValue = "application/ld+json";
             (var query, var queryConfig) = ParseSparqlQuery(id, attribute);
@@ -68,7 +68,7 @@
             return result;
         }
 
-        public async Task<string> GetLdForProfileAndQuery(Uri profile, string query, string acceptHeaderValue, bool pagination)
+        public async Task<string> RunSparqlQuery(Uri profile, string query, string acceptHeaderValue, bool pagination)
         {
             var emptyResponse = new List<string> {
                 "",
