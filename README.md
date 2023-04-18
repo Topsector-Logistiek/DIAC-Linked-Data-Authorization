@@ -29,7 +29,7 @@ This Github repository is an implementation of authorization for Linked Data. Li
    - CertificatePassword > The password of the iSHARE test certificate.
    - CertificateChain > The certificates of the [iSHARE Test CA]: as a comma separated byte stream. In case your certificate is issued by *C=NL, O=iSHARE Foundation, CN=TEST iSHARE Foundation PKIoverheid Organisatie Server CA - G3*, you can use [this] chain.
    - CertificateChainPassword > Empty string for public test certificates: ""
-   - AuthorizationRegistryDelegationUrl > The URL of your delegation evidence in the authorization registry, that is "https://api.poort8.nl/ar-preview/playbook/{{Playbook}}/ishare/delegation"  for Poort8.
+   - AuthorizationRegistryDelegationUrl > The URL of your delegation evidence in the authorization registry, that is "https://api.poort8.nl/ar-preview/ishare/delegation"  for Poort8.
    - AuthorizationRegistryTokenUrl > The token URL of the authorization registry, that is "https://api.poort8.nl/ar-preview/ishare/connect/token" for Poort8.
    - AuthorizationRegistryIdentifier >  The EORI of the authorization registry.
    - Playbook > Your playbook name.
